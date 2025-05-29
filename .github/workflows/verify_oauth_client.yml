@@ -1,0 +1,39 @@
+---
+name: Verify OAuth Client
+
+on:
+  workflow_call:
+    inputs:
+      CLIENT_ID:
+        required: true
+        type: string
+        description: ID of OAuth client to verify
+      VERIFY_STATUS:
+        required: false
+        type: boolean
+        default: true
+        description: true to verify or false to disable
+
+jobs:
+  ensure-runner-exists:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: shared-runner
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: self-hosted
+    needs: ensure-runner-exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+
+      - name: Execute script
+        run: scripts/verify_oauth_client.sh ${{ inputs.CLIENT_ID }} ${{ inputs.VERIFY_STATUS }} ${{ vars.SYNAPSE_HOST }}
+...

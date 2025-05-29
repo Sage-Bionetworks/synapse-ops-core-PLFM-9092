@@ -1,0 +1,70 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+
+name: aws-deploy
+
+on:
+  workflow_call:
+    inputs:
+      LABEL:
+        required: false
+        type: string
+        default: 'self-hosted'
+        description: label to add to the runner
+      INSTANCE_TYPE:
+        required: true
+        type: string
+        description: type of EC2 instance to use for the runner
+      CONTEXT:
+        required: true
+        type: string
+        description: dev or prod
+      ROLE_TO_ASSUME:
+        required: true
+        type: string
+        description: AWS role to assume to deploy self-hosted runner
+      REPOSITORY_URL:
+        required: true
+        type: string
+        description: The URL for the repository which will be using the runner
+    secrets:
+      REGISTRATION_TOKEN:
+        required: true
+        description: The registration token from the repository which will use the runner
+
+jobs:
+
+  cdk-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+
+      - name: Assume AWS Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{inputs.ROLE_TO_ASSUME }}
+          role-session-name: GHA-${{ github.repository_owner }}-${{ github.event.repository.name }}-${{ github.run_id }}
+          role-duration-seconds: 1200
+
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'deploy'
+          cdk_args: >
+            --require-approval never -c env=${{ inputs.CONTEXT }}
+            -c github_runner_token=${{ secrets.REGISTRATION_TOKEN }}
+            -c github_repo_url=${{ inputs.REPOSITORY_URL }}
+            -c runner_label=${{ inputs.LABEL }}
+            -c instance_type=${{ inputs.INSTANCE_TYPE }}
+             --progress events --debug
+          actions_comment: false
