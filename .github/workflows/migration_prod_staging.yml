@@ -1,0 +1,52 @@
+---
+name: Migration, Prod to Staging
+
+on:
+  workflow_call:
+    inputs:
+      STACK:
+        required: true
+        type: choice
+        description: dev or prod
+        options:
+        - dev
+        - prod
+env:
+   RUNNER_LABEL: shared-runner
+   PATH_TO_SCRIPT: scripts
+   PATH_TO_SOURCE_CODE: src
+
+jobs:
+  ensure-runner-exists:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: ${{ env.RUNNER_LABEL }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: ${{ env.RUNNER_LABEL }}
+    needs: ensure-runner-exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+          path: ${{ env.PATH_TO_SCRIPT }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/Synapse-Migration-Utility
+          ref: develop
+          path: ${{ env.PATH_TO_SOURCE_CODE }}
+
+      - name: Execute script
+        run: >
+          ${{ env.PATH_TO_SCRIPT }}/scripts/migration_prod_staging.sh 
+          ${{ inputs.STACK }} 
+          ${{ env.PATH_TO_SOURCE_CODE }}
+...
