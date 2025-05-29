@@ -15,6 +15,8 @@ STACK=${1}
 # Folder containing source code
 PATH=${2}
 
+REMAIN_READ_ONLY_MODE=${3}
+
 cd $PATH
 
 mvn clean install
@@ -31,6 +33,6 @@ export CMD_PROPS=\
 " -Dorg.sagebionetworks.delay.before.start.ms=30000"\
 " -Dorg.sagebionetworks.include.full.table.checksum=false"\
 " -Dorg.sagebionetworks.service.key=synapseadm"\
-" -Dorg.sagebionetworks.remain.read.only.mode=false"
+" -Dorg.sagebionetworks.remain.read.only.mode=${REMAIN_READ_ONLY_MODE}"
 
 java -Xms256m -Xmx4g -cp ./target/migration-utility-1.3-419-jar-with-dependencies.jar $CMD_PROPS org.sagebionetworks.migration.MigrationClientMain

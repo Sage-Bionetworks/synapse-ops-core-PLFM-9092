@@ -32,5 +32,5 @@ jobs:
           ref: main
 
       - name: Execute script
-        run: scripts/verify_oauth_client.sh ${{ inputs.USER_ID }} ${{ vars.SYNAPSE_HOST }}
+        run: scripts/remove_synapse_user.sh ${{ inputs.USER_ID }} ${{ vars.SYNAPSE_HOST }}
 ...

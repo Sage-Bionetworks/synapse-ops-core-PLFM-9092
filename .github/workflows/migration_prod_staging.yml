@@ -11,6 +11,10 @@ on:
         options:
         - dev
         - prod
+      REMAIN_READ_ONLY_MODE:
+        required: true
+        type: boolean
+        
 env:
    RUNNER_LABEL: shared-runner
    PATH_TO_SCRIPT: scripts
@@ -49,4 +53,5 @@ jobs:
           ${{ env.PATH_TO_SCRIPT }}/scripts/migration_prod_staging.sh 
           ${{ inputs.STACK }} 
           ${{ env.PATH_TO_SOURCE_CODE }}
+          ${{ inputs.REMAIN_READ_ONLY_MODE }}
 ...

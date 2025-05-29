@@ -58,9 +58,6 @@ class SynapseGithubRunnerStack(Stack):
             self, "MySecurityGroup", vpc=vpc, allow_all_outbound=True
         )
 
-        # Create Security Group Ingress Rules
-        sec_group.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22), "allow SSH access")
-
         github_runner_token = get_github_runner_token(env)
         github_repo_url = get_github_repo_url(env)
         runner_label = get_runner_label(env)

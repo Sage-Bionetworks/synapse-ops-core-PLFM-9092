@@ -14,5 +14,5 @@ SYNAPSE_HOST=${2}
 ACCESS_TOKEN=`aws secretsmanager get-secret-value --secret-id /synapse/admin-pat --query SecretString --output text`
 
 set +x
-curl --fail-with-body -H "Authorization:Bearer $ACCESS_TOKEN" https://repo-prod.prod.sagebase.org/repo/v1/user/$USER_ID/bundle?mask=0xFFFF
-curl --fail-with-body -X POST -H "Authorization:Bearer $ACCESS_TOKEN" https://repo-prod.prod.sagebase.org/repo/v1/admin/redact/user/$USER_ID
+curl --fail-with-body -H "Authorization:Bearer $ACCESS_TOKEN" $SYNAPSE_HOST/repo/v1/user/$USER_ID/bundle?mask=0xFFFF
+curl --fail-with-body -X POST -H "Authorization:Bearer $ACCESS_TOKEN" $SYNAPSE_HOST/repo/v1/admin/redact/user/$USER_ID
