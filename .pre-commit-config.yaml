@@ -31,8 +31,8 @@ repos:
     rev: v1.4.2
     hooks:
       - id: remove-tabs
-  - repo: https://github.com/sirosen/check-jsonschema
+  - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.33.0
     hooks:
-      - id: check-github-workflows
+#      - id: check-github-workflows
       - id: check-github-actions

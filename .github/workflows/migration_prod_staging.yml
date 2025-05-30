@@ -14,9 +14,10 @@ on:
       REMAIN_READ_ONLY_MODE:
         required: true
         type: boolean
-        
+
 env:
-   RUNNER_LABEL: shared-runner
+   RUNNER_LABEL: migration-runner
+   INSTANCE_TYPE: t4g.large
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
 
@@ -25,6 +26,7 @@ jobs:
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
       LABEL: ${{ env.RUNNER_LABEL }}
+      INSTANCE_TYPE: ${{ env.INSTANCE_TYPE }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
     secrets: inherit
@@ -50,8 +52,8 @@ jobs:
 
       - name: Execute script
         run: >
-          ${{ env.PATH_TO_SCRIPT }}/scripts/migration_prod_staging.sh 
-          ${{ inputs.STACK }} 
+          ${{ env.PATH_TO_SCRIPT }}/scripts/migration_prod_staging.sh
+          ${{ inputs.STACK }}
           ${{ env.PATH_TO_SOURCE_CODE }}
           ${{ inputs.REMAIN_READ_ONLY_MODE }}
 ...

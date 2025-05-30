@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Enable anonymous download, part of the SOP at 
+# Enable anonymous download, part of the SOP at
 # https://sagebionetworks.jira.com/wiki/spaces/PLFM/pages/792231937/Configuring+Tables+to+Allow+Anonymous+View+Access .
 #
 

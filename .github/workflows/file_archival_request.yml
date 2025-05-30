@@ -65,10 +65,10 @@ jobs:
 
       - name: Execute script
         run: >
-          ${{ env.PATH_TO_SCRIPT }}/scripts/file_archival_request.sh 
-          ${{ inputs.STACK }} 
-          ${{ inputs.STACK_ENDPOINT_SUFFIX }} 
-          ${{ inputs.TIMEOUT_MILLIS }} 
-          ${{ inputs.FILE_COUNT_LIMIT }} 
+          ${{ env.PATH_TO_SCRIPT }}/scripts/file_archival_request.sh
+          ${{ inputs.STACK }}
+          ${{ inputs.STACK_ENDPOINT_SUFFIX }}
+          ${{ inputs.TIMEOUT_MILLIS }}
+          ${{ inputs.FILE_COUNT_LIMIT }}
           ${{ env.PATH_TO_SOURCE_CODE }}
 ...

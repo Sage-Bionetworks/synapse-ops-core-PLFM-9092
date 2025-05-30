@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Submit a request for archiving unlinked file handles. Normally runs every 30 minutes 
+# Submit a request for archiving unlinked file handles. Normally runs every 30 minutes
 # between 12:00 AM and 06:59 AM, Tuesday through Thursday (Pacific Time):
 # TZ=US/Pacific
 # H/30 0-6 * * 2-4

@@ -1,12 +1,12 @@
 #!/bin/bash
 #
 # Removing quarantine status of user.
-# Added a POST /admin/emailQuarantine/expire API that allows to remove an email 
-# address from quarantine, the body of the request needs to contain an attribute 
+# Added a POST /admin/emailQuarantine/expire API that allows to remove an email
+# address from quarantine, the body of the request needs to contain an attribute
 # "email" which value is the email to be un-quarantined.
 #
-# Note that this will leave the record in the database but the expiration date 
-# of the quarantined record will be updated to the current time 
+# Note that this will leave the record in the database but the expiration date
+# of the quarantined record will be updated to the current time
 # (effectively un-quarantining the email address).
 #
 
