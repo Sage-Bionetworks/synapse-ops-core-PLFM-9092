@@ -1,0 +1,74 @@
+---
+name: File Archival Request
+
+on:
+  workflow_call:
+    inputs:
+      STACK:
+        required: true
+        type: choice
+        description: dev or prod
+        options:
+        - dev
+        - prod
+      STACK_ENDPOINT_SUFFIX:
+        required: true
+        type: choice
+        description: suffix of Synapse host
+        options:
+        - dev.dev.sagebase.org
+        - staging.prod.sagebase.org
+        - prod.prod.sagebase.org
+      TIMEOUT_MILLIS:
+        required: false
+        type: number
+        description: The task timeout in milliseconds
+        default: 90000
+      FILE_COUNT_LIMIT:
+        required: false
+        type: number
+        description: The maximum number of files to scan in a run
+        default: 25000
+
+env:
+   RUNNER_LABEL: shared-runner
+   PATH_TO_SCRIPT: scripts
+   PATH_TO_SOURCE_CODE: src
+
+jobs:
+  ensure-runner-exists:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: ${{ env.RUNNER_LABEL }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: ${{ env.RUNNER_LABEL }}
+    needs: ensure-runner-exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+          path: ${{ env.PATH_TO_SCRIPT }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/Synapse-Stack-Builder
+          ref: develop
+          path: ${{ env.PATH_TO_SOURCE_CODE }}
+
+      - name: Execute script
+        run: >
+          ${{ env.PATH_TO_SCRIPT }}/scripts/file_archival_request.sh
+          ${{ inputs.STACK }}
+          ${{ inputs.STACK_ENDPOINT_SUFFIX }}
+          ${{ inputs.TIMEOUT_MILLIS }}
+          ${{ inputs.FILE_COUNT_LIMIT }}
+          ${{ env.PATH_TO_SOURCE_CODE }}
+...

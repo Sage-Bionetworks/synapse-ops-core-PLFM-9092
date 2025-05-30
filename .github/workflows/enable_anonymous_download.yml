@@ -1,0 +1,37 @@
+---
+name: Unquarantine User
+
+on:
+  workflow_call:
+    inputs:
+      ENTITY_ID:
+        required: true
+        type: string
+        description: The entity id of the data that should be downloadable anonymously
+
+env:
+   RUNNER_LABEL: shared-runner
+
+jobs:
+  ensure-runner-exists:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: ${{ env.RUNNER_LABEL }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: ${{ env.RUNNER_LABEL }}
+    needs: ensure-runner-exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+
+      - name: Execute script
+        run: scripts/enable_anonymous_download.sh ${{ inputs.ENTITY_ID }} ${{ vars.SYNAPSE_HOST }}
+...

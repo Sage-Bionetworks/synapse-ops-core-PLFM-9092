@@ -1,0 +1,58 @@
+---
+name: Update feature status
+
+on:
+  workflow_call:
+    inputs:
+      FEATURE_STATUS:
+        required: false
+        type: boolean
+        default: true
+        description: true to enable feature or false to disable
+      FEATURE:
+        required: true
+        type: choice
+        description:  The feature to enable or disable
+        options:
+        - MULTIPART_AUTO_CLEANUP
+        - DATA_ACCESS_NOTIFICATIONS
+        - DATA_ACCESS_AUTO_REVOCATION
+        - DATA_DOWNLOAD_THROUGH_CLOUDFRONT
+        - CHANGE_PASSWORD_2FA_CHECK_BYPASS
+        - ALLOW_AGENT_WRITES
+        - DISABLE_2FA_REQUIREMENT
+      STACK:
+        required: true
+        type: choice
+        description: Stack to affect
+        options:
+        - https://repo-dev.dev.sagebase.org
+        - https://repo-staging.prod.sagebase.org
+        - https://repo-prod.prod.sagebase.org
+
+env:
+   RUNNER_LABEL: shared-runner
+
+jobs:
+  ensure-runner-exists:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: ${{ env.RUNNER_LABEL }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: ${{ env.RUNNER_LABEL }}
+    needs: ensure-runner-exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+
+      - name: Execute script
+        run: scripts/update_feature_status.sh ${{ inputs.FEATURE_STATUS }} ${{ inputs.FEATURE }} ${{ inputs.STACK }}
+...
