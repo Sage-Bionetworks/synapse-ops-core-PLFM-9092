@@ -6,11 +6,8 @@ on:
     inputs:
       STACK:
         required: true
-        type: choice
+        type: string
         description: dev or prod
-        options:
-        - dev
-        - prod
       REMAIN_READ_ONLY_MODE:
         required: true
         type: boolean
