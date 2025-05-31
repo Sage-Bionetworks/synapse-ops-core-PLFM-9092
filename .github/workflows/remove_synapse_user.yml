@@ -13,17 +13,26 @@ env:
    RUNNER_LABEL: shared-runner
 
 jobs:
+  # this is necessary to make env values available to later jobs
+  get-env:
+    runs-on: ubuntu-latest
+    steps:
+       - run: echo "null"
+    outputs:
+      RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
+
   ensure-runner-exists:
+    needs: get-env
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
-      LABEL: ${{ env.RUNNER_LABEL }}
+      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
     secrets: inherit
 
   execute-script:
-    runs-on: ${{ env.RUNNER_LABEL }}
-    needs: ensure-runner-exists
+    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+    needs: [ensure-runner-exists, get-env]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
