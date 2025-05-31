@@ -21,7 +21,7 @@ jobs:
   ensure-runner-exists:
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
-      LABEL: ${{ env.RUNNER_LABEL }}
+      LABEL: Sage-Bionetworks/synapse-ops-core@${{ env.RUNNER_LABEL }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
     secrets: inherit
