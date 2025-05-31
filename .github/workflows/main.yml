@@ -25,13 +25,9 @@ jobs:
       - name: Run unit tests
         run: python -m pytest tests/ -s -v
 
-  # make sure tests pass for both dev and prod stacks
   synth-test:
     needs: tests
-    strategy:
-      matrix:
-        stack: ['dev']
     uses: "./.github/workflows/synth-test.yml"
     with:
-      CONTEXT: ${{ matrix.stack }}
+      CONTEXT: 'dev'
 ...
