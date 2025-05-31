@@ -18,7 +18,7 @@ env:
    RUNNER_LABEL: shared-runner
 
 jobs:
-  # this is necessary to make env values available to steps
+  # this is necessary to make env values available to later jobs
   get-env:
     runs-on: ubuntu-latest
     steps:

@@ -36,17 +36,28 @@ env:
    PATH_TO_SOURCE_CODE: src
 
 jobs:
+  # this is necessary to make env values available to later jobs
+  get-env:
+    runs-on: ubuntu-latest
+    steps:
+       - run: echo "null"
+    outputs:
+      RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
+      PATH_TO_SCRIPT: ${{ env.PATH_TO_SCRIPT }}
+      PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
+
   ensure-runner-exists:
+    needs: get-env
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
-      LABEL: ${{ env.RUNNER_LABEL }}
+      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
     secrets: inherit
 
   execute-script:
-    runs-on: ${{ env.RUNNER_LABEL }}
-    needs: ensure-runner-exists
+    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+    needs: [ensure-runner-exists, get-env]
 
     steps:
       - name: Checkout repository
@@ -54,21 +65,21 @@ jobs:
         with:
           repository: Sage-Bionetworks/synapse-ops-core
           ref: main
-          path: ${{ env.PATH_TO_SCRIPT }}
+          path: ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}
 
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           repository: Sage-Bionetworks/Synapse-Stack-Builder
           ref: develop
-          path: ${{ env.PATH_TO_SOURCE_CODE }}
+          path: ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 
       - name: Execute script
         run: >
-          ${{ env.PATH_TO_SCRIPT }}/scripts/file_archival_request.sh
+          ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/file_archival_request.sh
           ${{ inputs.STACK }}
           ${{ inputs.STACK_ENDPOINT_SUFFIX }}
           ${{ inputs.TIMEOUT_MILLIS }}
           ${{ inputs.FILE_COUNT_LIMIT }}
-          ${{ env.PATH_TO_SOURCE_CODE }}
+          ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 ...
