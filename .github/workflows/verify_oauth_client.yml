@@ -36,7 +36,7 @@ jobs:
     secrets: inherit
 
   execute-script:
-    needs: [ensure-runner-exist, get-env]
+    needs: [ensure-runner-exists, get-env]
     runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
 
     steps:
