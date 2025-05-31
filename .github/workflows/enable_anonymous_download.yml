@@ -1,5 +1,5 @@
 ---
-name: Unquarantine User
+name: Enable Anonymous Download
 
 on:
   workflow_call:

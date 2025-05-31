@@ -2,7 +2,7 @@
 name: Verify OAuth Client
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       CLIENT_ID:
         required: true

@@ -1,5 +1,5 @@
 ---
-name: Unquarantine User
+name: Decertify Synapse User
 
 on:
   workflow_call:
