@@ -8,11 +8,27 @@ on:
         required: true
         type: string
         description: dev or prod
-      REPO_INSTANCE_AND_VERSION:
+      REPO_PROD_INSTANCE_AND_VERSION:
         required: true
         type: string
         description: instance and beanstalk number, e.g., 400-12
-      PORTAL_INSTANCE_AND_VERSION:
+      PORTAL_PROD_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+      REPO_STAGING_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+      PORTAL_STAGING_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+      REPO_TEST_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+      PORTAL_TEST_INSTANCE_AND_VERSION:
         required: true
         type: string
         description: instance and beanstalk number, e.g., 400-12
@@ -65,7 +81,11 @@ jobs:
         run: >
           ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/build_synapse_bind_nlb_to_alb.sh
           ${{ inputs.STACK }}
-          ${{ inputs.REPO_INSTANCE_AND_VERSION }}
-          ${{ inputs.PORTAL_INSTANCE_AND_VERSION }}
+          ${{ inputs.REPO_PROD_INSTANCE_AND_VERSION }}
+          ${{ inputs.PORTAL_PROD_INSTANCE_AND_VERSION }}
+          ${{ inputs.REPO_STAGING_INSTANCE_AND_VERSION }}
+          ${{ inputs.PORTAL_STAGING_INSTANCE_AND_VERSION }}
+          ${{ inputs.REPO_TEST_INSTANCE_AND_VERSION }}
+          ${{ inputs.PORTAL_TEST_INSTANCE_AND_VERSION }}
           ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 ...

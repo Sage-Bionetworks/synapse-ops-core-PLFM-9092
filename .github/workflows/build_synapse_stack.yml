@@ -15,11 +15,18 @@ on:
       REPO_AND_WORKERS_VERSION:
         required: true
         type: string
-        description: example, 544.0
+      REPO_BEANSTALK_VERSION:
+        required: true
+        type: number
+        description: example, 0
       PORTAL_VERSION:
         required: true
         type: string
         description: example, 544.0-4-gd18c3167f2
+      PORTAL_BEANSTALK_VERSION:
+        required: true
+        type: number
+        description: example, 0
       VPC_SUBNET_COLOR:
         required: true
         type: string
@@ -76,7 +83,9 @@ jobs:
           ${{ inputs.STACK }}
           ${{ inputs.INSTANCE }}
           ${{ inputs.REPO_AND_WORKERS_VERSION }}
+          ${{ inputs.REPO_BEANSTALK_VERSION }}
           ${{ inputs.PORTAL_VERSION }}
+          ${{ inputs.PORTAL_BEANSTALK_VERSION }}
           ${{ inputs.VPC_SUBNET_COLOR }}
           ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 ...

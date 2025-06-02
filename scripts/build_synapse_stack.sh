@@ -14,14 +14,20 @@ INSTANCE=${2}
 # example: 544.0
 REPO_AND_WORKERS_VERSION=${3}
 
+# example: 0
+REPO_BEANSTALK_VERSION=${4}
+
 # example: 544.0-4-gd18c3167f2
-PORTAL_VERSION=${4}
+PORTAL_VERSION=${5}
+
+# example: 0
+PORTAL_BEANSTALK_VERSION=${6}
 
 # example Blue
-VPC_SUBNET_COLOR=${5}
+VPC_SUBNET_COLOR=${7}
 
 # Folder containing source code
-PATH=${6}
+PATH=${8}
 
 cd $PATH
 
@@ -34,9 +40,9 @@ export CMD_PROPS=\
 " -Dorg.sagebionetworks.beanstalk.version.workers=$REPO_AND_WORKERS_VERSION"\
 " -Dorg.sagebionetworks.beanstalk.version.portal=$PORTAL_VERSION"\
 " -Dorg.sagebionetworks.vpc.subnet.color=$VPC_SUBNET_COLOR"\
-" -Dorg.sagebionetworks.beanstalk.number.repo=0"\
+" -Dorg.sagebionetworks.beanstalk.number.repo=$REPO_BEANSTALK_VERSION"\
 " -Dorg.sagebionetworks.beanstalk.number.workers=0"\
-" -Dorg.sagebionetworks.beanstalk.number.portal=0"\
+" -Dorg.sagebionetworks.beanstalk.number.portal=$PORTAL_BEANSTALK_VERSION"\
 " -Dorg.sagebionetworks.beanstalk.instance.type=m6g.large"\
 " -Dorg.sagebionetworks.beanstalk.instance.memory=4096"\
 " -Dorg.sagebionetworks.repo.rds.instance.class=db.r6g.2xlarge"\

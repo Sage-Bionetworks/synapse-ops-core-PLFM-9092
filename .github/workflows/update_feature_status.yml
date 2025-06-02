@@ -2,7 +2,7 @@
 name: Update feature status
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       FEATURE_STATUS:
         required: false
