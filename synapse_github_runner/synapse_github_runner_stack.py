@@ -40,6 +40,9 @@ def get_image_central_role_arn(env: dict) -> str:
 def get_image_builder_pipeline_arn(env: dict) -> str:
     return env.get("IMAGE_BUILDER_PIPELINE_ARN")
 
+def get_synapse_deployment_role(env: dict) -> str:
+    return env.get("SYNAPSE_DEPLOYMENT_ROLE")
+
 
 class SynapseGithubRunnerStack(Stack):
 
@@ -94,18 +97,24 @@ class SynapseGithubRunnerStack(Stack):
             "echo User-data script completed."
         )
 
-        # Create an IAM role
-        ec2_role = iam.Role(self, "EC2Role",
-            assumed_by=iam.ServicePrincipal("ec2.amazonaws.com")  # EC2 principal
-        )
-        # Add managed policy (e.g., S3 read-only access)
-        ec2_role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
 
-        # Add policy to let EC2 read /synapse/admin-pat from Secrets Manager
-        ec2_role.add_to_policy(iam.PolicyStatement(
-            actions=["secretsmanager:GetSecretValue"],
-            resources=[f"arn:aws:secretsmanager:{region}:{account_id}:secret:/synapse/admin-pat*"]
-        ))
+        synapse_deployment_role = get_synapse_deployment_role(env)
+
+        if synapse_deployment_role is not None and len(synapse_deployment_role)>0:
+            ec2_role = iam.Role.from_role_arn(self, "SynapseDeploymentRole", synapse_deployment_role)
+        else:
+            # Create an IAM role
+            ec2_role = iam.Role(self, "EC2Role",
+                assumed_by=iam.ServicePrincipal("ec2.amazonaws.com")  # EC2 principal
+            )
+            # Add managed policy (e.g., S3 read-only access)
+            ec2_role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
+
+            # Add policy to let EC2 read /synapse/admin-pat from Secrets Manager
+            ec2_role.add_to_policy(iam.PolicyStatement(
+                actions=["secretsmanager:GetSecretValue"],
+                resources=[f"arn:aws:secretsmanager:{region}:{account_id}:secret:/synapse/admin-pat*"]
+            ))
 
         # Get the latest AMI from the Pipeline Builder
         # This ensures the EC2 will pass CIS Level 1 security scans.

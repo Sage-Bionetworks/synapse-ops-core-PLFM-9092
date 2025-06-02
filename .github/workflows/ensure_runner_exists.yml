@@ -26,6 +26,11 @@ on:
         required: true
         type: string
         description: AWS role to assume to deploy self-hosted runner
+      SYNAPSE_DEPLOYMENT_ROLE:
+        required: false
+        type: string
+        default: ""
+        description: AWS role to provide to self-hosted runner that needs to provision infrastructure
 
 jobs:
   # There is no 'github.' variable that gives just the repo name so we have to do this:
@@ -118,6 +123,7 @@ jobs:
       INSTANCE_TYPE: ${{ inputs.INSTANCE_TYPE }}
       CONTEXT: ${{ inputs.CONTEXT }}
       ROLE_TO_ASSUME: ${{ inputs.ROLE_TO_ASSUME }}
+      SYNAPSE_DEPLOYMENT_ROLE: ${{ inputs.SYNAPSE_DEPLOYMENT_ROLE }}
       REPOSITORY_URL: https://github.com/${{ github.repository }}
     secrets:
       REGISTRATION_TOKEN: ${{ fromJSON(needs.create-runner-registration-token.outputs.token).token }}

@@ -13,7 +13,7 @@ on:
         type: boolean
 
 env:
-   RUNNER_LABEL: migration-runner
+   RUNNER_LABEL: deployment-runner
    INSTANCE_TYPE: t4g.large
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
@@ -37,6 +37,7 @@ jobs:
       LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+      SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
     secrets: inherit
 
   execute-script:
