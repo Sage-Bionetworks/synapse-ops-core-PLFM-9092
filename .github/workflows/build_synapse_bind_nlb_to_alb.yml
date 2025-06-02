@@ -1,0 +1,71 @@
+---
+name: Bind NLB to ALB
+
+on:
+  workflow_call:
+    inputs:
+      STACK:
+        required: true
+        type: string
+        description: dev or prod
+      REPO_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+      PORTAL_INSTANCE_AND_VERSION:
+        required: true
+        type: string
+        description: instance and beanstalk number, e.g., 400-12
+
+env:
+   RUNNER_LABEL: shared-runner
+   PATH_TO_SCRIPT: scripts
+   PATH_TO_SOURCE_CODE: src
+
+jobs:
+  # this is necessary to make env values available to later jobs
+  get-env:
+    runs-on: ubuntu-latest
+    steps:
+       - run: echo "null"
+    outputs:
+      RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
+      PATH_TO_SCRIPT: ${{ env.PATH_TO_SCRIPT }}
+      PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
+
+  ensure-runner-exists:
+    needs: get-env
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+
+  execute-script:
+    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+    needs: [ensure-runner-exists, get-env]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/synapse-ops-core
+          ref: main
+          path: ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: Sage-Bionetworks/Synapse-Stack-Builder
+          ref: develop
+          path: ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
+
+      - name: Execute script
+        run: >
+          ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/build_synapse_bind_nlb_to_alb.sh
+          ${{ inputs.STACK }}
+          ${{ inputs.REPO_INSTANCE_AND_VERSION }}
+          ${{ inputs.PORTAL_INSTANCE_AND_VERSION }}
+          ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
+...
