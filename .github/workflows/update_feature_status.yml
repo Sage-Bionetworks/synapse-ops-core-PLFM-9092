@@ -11,24 +11,12 @@ on:
         description: true to enable feature or false to disable
       FEATURE:
         required: true
-        type: choice
+        type: string
         description:  The feature to enable or disable
-        options:
-        - MULTIPART_AUTO_CLEANUP
-        - DATA_ACCESS_NOTIFICATIONS
-        - DATA_ACCESS_AUTO_REVOCATION
-        - DATA_DOWNLOAD_THROUGH_CLOUDFRONT
-        - CHANGE_PASSWORD_2FA_CHECK_BYPASS
-        - ALLOW_AGENT_WRITES
-        - DISABLE_2FA_REQUIREMENT
       STACK:
         required: true
-        type: choice
+        type: string
         description: Stack to affect
-        options:
-        - https://repo-dev.dev.sagebase.org
-        - https://repo-staging.prod.sagebase.org
-        - https://repo-prod.prod.sagebase.org
 
 env:
    RUNNER_LABEL: shared-runner

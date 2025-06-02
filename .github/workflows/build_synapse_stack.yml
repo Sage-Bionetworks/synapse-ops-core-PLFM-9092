@@ -1,5 +1,5 @@
 ---
-name: Migration, Prod to Staging
+name: Build Synapse Stack
 
 on:
   workflow_call:
@@ -7,14 +7,34 @@ on:
       STACK:
         required: true
         type: string
-        description: dev or prod
-      REMAIN_READ_ONLY_MODE:
+        description: staging or prod
+      INSTANCE:
         required: true
-        type: boolean
+        type: string
+        description: example, 544
+      REPO_AND_WORKERS_VERSION:
+        required: true
+        type: string
+      REPO_BEANSTALK_VERSION:
+        required: true
+        type: number
+        description: example, 0
+      PORTAL_VERSION:
+        required: true
+        type: string
+        description: example, 544.0-4-gd18c3167f2
+      PORTAL_BEANSTALK_VERSION:
+        required: true
+        type: number
+        description: example, 0
+      VPC_SUBNET_COLOR:
+        required: true
+        type: string
+        description: Red, Green, or Blue
+
 
 env:
    RUNNER_LABEL: migration-runner
-   INSTANCE_TYPE: t4g.large
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
 
@@ -26,7 +46,6 @@ jobs:
        - run: echo "null"
     outputs:
       RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
-      INSTANCE_TYPE: ${{ env.INSTANCE_TYPE }}
       PATH_TO_SCRIPT: ${{ env.PATH_TO_SCRIPT }}
       PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
 
@@ -54,14 +73,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          repository: Sage-Bionetworks/Synapse-Migration-Utility
+          repository: Sage-Bionetworks/Synapse-Stack-Builder
           ref: develop
           path: ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 
       - name: Execute script
         run: >
-          ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/migration_prod_staging.sh
+          ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/build_synapse_stack.sh
           ${{ inputs.STACK }}
+          ${{ inputs.INSTANCE }}
+          ${{ inputs.REPO_AND_WORKERS_VERSION }}
+          ${{ inputs.REPO_BEANSTALK_VERSION }}
+          ${{ inputs.PORTAL_VERSION }}
+          ${{ inputs.PORTAL_BEANSTALK_VERSION }}
+          ${{ inputs.VPC_SUBNET_COLOR }}
           ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
-          ${{ inputs.REMAIN_READ_ONLY_MODE }}
 ...

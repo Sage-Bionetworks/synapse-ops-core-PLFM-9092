@@ -6,19 +6,12 @@ on:
     inputs:
       STACK:
         required: true
-        type: choice
+        type: string
         description: dev or prod
-        options:
-        - dev
-        - prod
       STACK_ENDPOINT_SUFFIX:
         required: true
-        type: choice
+        type: string
         description: suffix of Synapse host
-        options:
-        - dev.dev.sagebase.org
-        - staging.prod.sagebase.org
-        - prod.prod.sagebase.org
       TIMEOUT_MILLIS:
         required: false
         type: number
