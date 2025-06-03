@@ -23,6 +23,10 @@ on:
         required: true
         type: string
         description: AWS role to assume to deploy self-hosted runner
+      SYNAPSE_DEPLOYMENT_ROLE:
+        required: false
+        type: string
+        description: AWS role to provide to self-hosted runner that needs to provision infrastructure
       REPOSITORY_URL:
         required: true
         type: string
@@ -66,5 +70,6 @@ jobs:
             -c github_repo_url=${{ inputs.REPOSITORY_URL }}
             -c runner_label=${{ inputs.LABEL }}
             -c instance_type=${{ inputs.INSTANCE_TYPE }}
+            -c synapse_deployment_role=${{ inputs.SYNAPSE_DEPLOYMENT_ROLE }}
              --progress events --debug
           actions_comment: false
