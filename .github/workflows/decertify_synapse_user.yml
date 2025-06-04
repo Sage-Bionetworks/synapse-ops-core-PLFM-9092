@@ -42,5 +42,5 @@ jobs:
           ref: main
 
       - name: Execute script
-        run: scripts/decertify_user.sh ${{ inputs.USER_ID }} ${{ vars.SYNAPSE_HOST }}
+        run: scripts/decertify_synapse_user.sh ${{ inputs.USER_ID }} ${{ vars.SYNAPSE_HOST }}
 ...
