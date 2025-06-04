@@ -32,6 +32,8 @@ jobs:
   # this is necessary to make env values available to later jobs
   get-env:
     runs-on: ubuntu-latest
+    container:
+      image: maven:3-amazoncorretto-11
     steps:
        - run: echo "null"
     outputs:
