@@ -40,7 +40,7 @@
         "CostCenter": "Platform Infrastructure / 990300",
         "OwnerEmail": "synapseeng@sagebase.org"
       },
-      "STACK_NAME_PREFIX": "gh-runner-dev"
+      "STACK_NAME_PREFIX": "synapse-runner-dev"
     },
     "prod": {
       "ACCOUNT_ID": "325565585839",
@@ -53,7 +53,7 @@
         "OwnerEmail": "synapseeng@sagebase.org",
         "execute-script": "install-stack-armor-agent"
       },
-      "STACK_NAME_PREFIX": "gh-runner-prod"
+      "STACK_NAME_PREFIX": "synapse-runner-prod"
     }
   }
 }

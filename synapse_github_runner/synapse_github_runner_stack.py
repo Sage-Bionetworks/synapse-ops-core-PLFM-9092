@@ -48,8 +48,7 @@ class SynapseGithubRunnerStack(Stack):
 
     def __init__(self, scope: Construct, env: dict) -> None:
         stack_prefix = f'{env.get(config.STACK_NAME_PREFIX_CONTEXT)}'
-        stack_suffix = get_runner_label(env)
-        stack_id = f'{stack_prefix}-{stack_suffix}'
+        stack_id = f'{stack_prefix}-GHRunner'
         account_id=get_account_id(env)
         region=get_region(env)
         super().__init__(scope, stack_id, env={"account":account_id,"region":region})
