@@ -24,7 +24,6 @@ on:
         default: 25000
 
 env:
-   RUNNER_LABEL: shared-runner
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
 
@@ -40,16 +39,11 @@ jobs:
       PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
 
   ensure-runner-exists:
-    needs: get-env
-    uses: "./.github/workflows/ensure_runner_exists.yml"
-    with:
-      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
-      CONTEXT: ${{ vars.CONTEXT }}
-      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    uses: "./.github/workflows/ensure_shared_runner_exists.yml"
     secrets: inherit
 
   execute-script:
-    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+    runs-on: ${{ needs.ensure-runner-exists.outputs.LABEL }}
     needs: [ensure-runner-exists, get-env]
 
     steps:

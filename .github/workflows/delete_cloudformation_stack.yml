@@ -10,31 +10,14 @@ on:
         default: prod-999-shared-resources
         description: The name of the Cloudformation stack that needs to be deleted
 
-env:
-   RUNNER_LABEL: deployment-runner
-
 jobs:
-  # this is necessary to make env values available to later jobs
-  get-env:
-    runs-on: ubuntu-latest
-    steps:
-       - run: echo "null"
-    outputs:
-      RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
-
   ensure-runner-exists:
-    needs: get-env
-    uses: "./.github/workflows/ensure_runner_exists.yml"
-    with:
-      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
-      CONTEXT: ${{ vars.CONTEXT }}
-      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
-      SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
+    uses: "./.github/workflows/ensure_deployment_runner_exists.yml"
     secrets: inherit
 
   execute-script:
-    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
-    needs: [ensure-runner-exists, get-env]
+    runs-on: ${{ needs.ensure-runner-exists.outputs.LABEL }}
+    needs: ensure-runner-exists
 
     steps:
       - name: Checkout repository
