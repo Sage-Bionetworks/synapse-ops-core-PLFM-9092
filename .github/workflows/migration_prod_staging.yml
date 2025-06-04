@@ -13,8 +13,6 @@ on:
         type: boolean
 
 env:
-   RUNNER_LABEL: deployment-runner
-   INSTANCE_TYPE: t4g.large
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
 
@@ -25,23 +23,15 @@ jobs:
     steps:
        - run: echo "null"
     outputs:
-      RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
-      INSTANCE_TYPE: ${{ env.INSTANCE_TYPE }}
       PATH_TO_SCRIPT: ${{ env.PATH_TO_SCRIPT }}
       PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
 
   ensure-runner-exists:
-    needs: get-env
-    uses: "./.github/workflows/ensure_runner_exists.yml"
-    with:
-      LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
-      CONTEXT: ${{ vars.CONTEXT }}
-      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
-      SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
+    uses: "./.github/workflows/ensure_deployment_runner_exists.yml"
     secrets: inherit
 
   execute-script:
-    runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+    runs-on: ${{ needs.ensure-runner-exists.outputs.LABEL }}
     needs: [ensure-runner-exists, get-env]
 
     steps:
