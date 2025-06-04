@@ -12,6 +12,7 @@ on:
 
 env:
    RUNNER_LABEL: deployment-runner
+   INSTANCE_TYPE: t4g.large
 
 jobs:
   # this is necessary to make env values available to later jobs
@@ -21,6 +22,7 @@ jobs:
        - run: echo "null"
     outputs:
       RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
+      INSTANCE_TYPE: ${{ env.INSTANCE_TYPE }}
 
   ensure-runner-exists:
     needs: get-env
@@ -28,6 +30,7 @@ jobs:
     with:
       LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
       CONTEXT: ${{ vars.CONTEXT }}
+      INSTANCE_TYPE: ${{ needs.get-env.outputs.INSTANCE_TYPE }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
       SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
     secrets: inherit
