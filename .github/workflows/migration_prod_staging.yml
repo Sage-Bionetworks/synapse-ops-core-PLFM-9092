@@ -35,6 +35,7 @@ jobs:
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
       LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+      INSTANCE_TYPE: ${{ needs.get-env.outputs.INSTANCE_TYPE }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
       SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
