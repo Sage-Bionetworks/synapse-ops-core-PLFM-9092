@@ -16,6 +16,12 @@ systemctl enable docker
 service docker start
 usermod -a -G docker github_runner
 
+echo install Java
+dnf -y install java-11-amazon-corretto-devel
+
+echo install maven
+dnf -y install maven
+
 echo Starting GitHub Self-Hosted Runner
 dnf update && dnf install libicu -y
 # Create a folder
