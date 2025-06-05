@@ -27,9 +27,9 @@ PORTAL_BEANSTALK_VERSION=${6}
 VPC_SUBNET_COLOR=${7}
 
 # Folder containing source code
-PATH=${8}
+SRC_PATH=${8}
 
-cd $PATH
+cd $SRC_PATH
 
 mvn clean install
 

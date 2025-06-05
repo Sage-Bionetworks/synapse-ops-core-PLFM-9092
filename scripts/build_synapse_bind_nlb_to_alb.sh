@@ -17,7 +17,7 @@ REPO_TEST_INSTANCE_AND_VERSION=${6}
 PORTAL_TEST_INSTANCE_AND_VERSION=${7}
 
 # Folder containing source code
-PATH=${8}
+SRC_PATH=${8}
 
 # $(hostname repo 440-12) returns repo-prod-440-12
 # $(hostname repo none) returns none
@@ -30,7 +30,7 @@ else
 fi
 }
 
-cd $PATH
+cd $SRC_PATH
 
 mvn clean install
 
