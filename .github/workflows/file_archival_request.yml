@@ -50,8 +50,6 @@ jobs:
 
   execute-script:
     runs-on: ${{ needs.get-env.outputs.RUNNER_LABEL }}
-    container:
-      image: maven:3-amazoncorretto-11
     needs: [ensure-runner-exists, get-env]
 
     steps:
