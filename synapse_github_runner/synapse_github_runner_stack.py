@@ -80,7 +80,7 @@ class SynapseGithubRunnerStack(Stack):
 
         # user_data = ec2.UserData.for_linux()
         user_data = ec2.UserData.custom(user_data_content)
-        
+
         synapse_deployment_role = get_synapse_deployment_role(env)
 
         if synapse_deployment_role is not None and len(synapse_deployment_role)>0:
