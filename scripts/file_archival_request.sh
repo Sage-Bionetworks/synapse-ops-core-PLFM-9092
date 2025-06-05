@@ -24,7 +24,7 @@ TIMEOUT_MILLIS=${3}
 FILE_COUNT_LIMIT=${4}
 
 # Folder containing source code
-PATH=${5}
+SRC_PATH=${5}
 
 export CMD_PROPS=\
 " -Dorg.sagebionetworks.stack=${STACK}"\
@@ -33,7 +33,7 @@ export CMD_PROPS=\
 " -Dorg.sagebionetworks.jobs.endpoint.auth=https://auth-${STACK_ENDPOINT_SUFFIX}/auth/v1"\
 " -Dorg.sagebionetworks.jobs.endpoint.file=https://file-${STACK_ENDPOINT_SUFFIX}/file/v1"
 
-cd $PATH
+cd $SRC_PATH
 
 mvn clean install
 

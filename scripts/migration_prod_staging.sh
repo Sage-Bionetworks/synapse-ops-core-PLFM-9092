@@ -13,11 +13,11 @@ set +x
 STACK=${1}
 
 # Folder containing source code
-PATH=${2}
+SRC_PATH=${2}
 
 REMAIN_READ_ONLY_MODE=${3}
 
-cd $PATH
+cd $SRC_PATH
 
 mvn clean install
 
