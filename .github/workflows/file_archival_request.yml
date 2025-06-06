@@ -24,7 +24,8 @@ on:
         default: 25000
 
 env:
-   RUNNER_LABEL: shared-runner
+   RUNNER_LABEL: deployment-runner
+   INSTANCE_TYPE: t4g.large
    PATH_TO_SCRIPT: scripts
    PATH_TO_SOURCE_CODE: src
 
@@ -36,6 +37,7 @@ jobs:
        - run: echo "null"
     outputs:
       RUNNER_LABEL: ${{ env.RUNNER_LABEL }}
+      INSTANCE_TYPE: ${{ env.INSTANCE_TYPE }}
       PATH_TO_SCRIPT: ${{ env.PATH_TO_SCRIPT }}
       PATH_TO_SOURCE_CODE: ${{ env.PATH_TO_SOURCE_CODE }}
 
@@ -44,8 +46,10 @@ jobs:
     uses: "./.github/workflows/ensure_runner_exists.yml"
     with:
       LABEL: ${{ needs.get-env.outputs.RUNNER_LABEL }}
+      INSTANCE_TYPE: ${{ needs.get-env.outputs.INSTANCE_TYPE }}
       CONTEXT: ${{ vars.CONTEXT }}
       ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+      SYNAPSE_DEPLOYMENT_ROLE: ${{ vars.SYNAPSE_DEPLOYMENT_ROLE }}
     secrets: inherit
 
   execute-script:
