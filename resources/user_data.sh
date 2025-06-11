@@ -19,6 +19,37 @@ usermod -a -G docker github_runner
 echo install Java
 dnf -y install java-11-amazon-corretto-devel
 
+echo setup JDK11 as default
+alternatives --set java /usr/lib/jvm/java-11-amazon-corretto.aarch64/bin/java
+
+JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
+JAVA_PATH="$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+
+# Find GitHub Actions runner services
+for SERVICE in $(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}'); do
+  echo "Setting JAVA_HOME for $SERVICE"
+
+  # Create systemd override dir 
+  mkdir -p /etc/systemd/system/$SERVICE.d
+
+  # Write the override file
+  cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
+[Service]
+Environment="JAVA_HOME=${JAVA_HOME}"
+Environment="PATH=${JAVA_PATH}"
+EOF
+done
+
+# Reload systemd to apply changes
+systemctl daemon-reexec
+systemctl daemon-reload
+
+# Restart all runner services
+for SERVICE in $(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}'); do
+  echo "Restarting $SERVICE"
+  systemctl restart "$SERVICE"
+done
+
 echo install maven
 dnf -y install maven
 

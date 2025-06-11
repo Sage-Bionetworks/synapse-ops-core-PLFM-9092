@@ -17,6 +17,8 @@ SRC_PATH=${2}
 
 REMAIN_READ_ONLY_MODE=${3}
 
+SERVICE_KEY=${4}
+
 cd $SRC_PATH
 
 mvn clean install
@@ -32,7 +34,7 @@ export CMD_PROPS=\
 " -Dorg.sagebionetworks.backup.alias.type=MIGRATION_TYPE_NAME"\
 " -Dorg.sagebionetworks.delay.before.start.ms=30000"\
 " -Dorg.sagebionetworks.include.full.table.checksum=false"\
-" -Dorg.sagebionetworks.service.key=synapseadm"\
+" -Dorg.sagebionetworks.service.key=${SERVICE_KEY}"\
 " -Dorg.sagebionetworks.remain.read.only.mode=${REMAIN_READ_ONLY_MODE}"
 
 java -Xms256m -Xmx4g -cp ./target/migration-utility-1.3-419-jar-with-dependencies.jar $CMD_PROPS org.sagebionetworks.migration.MigrationClientMain
