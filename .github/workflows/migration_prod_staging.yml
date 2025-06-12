@@ -11,6 +11,9 @@ on:
       REMAIN_READ_ONLY_MODE:
         required: true
         type: boolean
+      SERVICE_KEY:
+        required: true
+        type: string
 
 env:
    RUNNER_LABEL: deployment-runner
@@ -66,4 +69,5 @@ jobs:
           ${{ inputs.STACK }}
           ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
           ${{ inputs.REMAIN_READ_ONLY_MODE }}
+          ${{ inputs.SERVICE_KEY }}
 ...
