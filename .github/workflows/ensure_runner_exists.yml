@@ -52,7 +52,9 @@ jobs:
         id: list-runners
         with:
           # Unfortunately there is no way to filter by label or status
-          route: GET /repos/${{ github.repository_owner }}/${{ needs.repo-name.outputs.name }}/actions/runners
+          route: GET /repos/${owner}/${repo}/actions/runners
+          owner: ${{ github.repository_owner }}
+          repo: ${{ needs.repo-name.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_READ_ORG_PAT }}
 
@@ -105,7 +107,9 @@ jobs:
       - uses: octokit/request-action@v2.4.0
         id: generate-runner-registration-token
         with:
-          route: POST /repos/${{ github.repository_owner }}/${{ needs.repo-name.outputs.name }}/actions/runners/registration-token
+          route: POST /repos/${owner}/${repo}/actions/runners/registration-token
+          owner: ${{ github.repository_owner }}
+          repo: ${{ needs.repo-name.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_READ_ORG_PAT }}
     outputs:

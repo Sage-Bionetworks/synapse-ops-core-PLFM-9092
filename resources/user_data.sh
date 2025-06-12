@@ -29,7 +29,7 @@ JAVA_PATH="$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 for SERVICE in $(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}'); do
   echo "Setting JAVA_HOME for $SERVICE"
 
-  # Create systemd override dir 
+  # Create systemd override dir
   mkdir -p /etc/systemd/system/$SERVICE.d
 
   # Write the override file
