@@ -22,34 +22,6 @@ dnf -y install java-11-amazon-corretto-devel
 echo setup JDK11 as default
 alternatives --set java /usr/lib/jvm/java-11-amazon-corretto.aarch64/bin/java
 
-JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
-JAVA_PATH="$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
-
-# Find GitHub Actions runner services
-for SERVICE in $(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}'); do
-  echo "Setting JAVA_HOME for $SERVICE"
-
-  # Create systemd override dir
-  mkdir -p /etc/systemd/system/$SERVICE.d
-
-  # Write the override file
-  cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
-[Service]
-Environment="JAVA_HOME=${JAVA_HOME}"
-Environment="PATH=${JAVA_PATH}"
-EOF
-done
-
-# Reload systemd to apply changes
-systemctl daemon-reexec
-systemctl daemon-reload
-
-# Restart all runner services
-for SERVICE in $(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}'); do
-  echo "Restarting $SERVICE"
-  systemctl restart "$SERVICE"
-done
-
 echo install maven
 dnf -y install maven
 
@@ -70,5 +42,28 @@ su -c "./config.sh --unattended --replace --url {github_repo_url} --token {githu
 ./svc.sh install github_runner
 # Start the service with the following command:
 ./svc.sh start
+
+JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
+
+# Find GitHub Actions runner service
+SERVICE=$(systemctl list-units --type=service --all | grep 'actions.runner' | awk '{print $1}')
+echo "Setting JAVA_HOME and PATH for $SERVICE"
+# Create systemd override dir
+mkdir -p /etc/systemd/system/$SERVICE.d
+# Write the override file
+cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
+[Service]
+Environment="JAVA_HOME=${JAVA_HOME}"
+Environment="PATH=${JAVA_HOME}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+EOF
+
+echo Created service override file
+cat /etc/systemd/system/$SERVICE.d/env.conf
+
+echo Restarting $SERVICE
+# Reload systemd to apply changes
+systemctl daemon-reexec
+systemctl daemon-reload
+systemctl restart "$SERVICE"
 
 echo User-data script completed.
