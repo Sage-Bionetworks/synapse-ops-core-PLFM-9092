@@ -54,7 +54,7 @@ mkdir -p /etc/systemd/system/$SERVICE.d
 cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
 [Service]
 Environment="JAVA_HOME=${JAVA_HOME}"
-Environment="PATH="${JAVA_HOME}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin""
+Environment="PATH=${JAVA_HOME}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 EOF
 
 echo Created service override file
