@@ -50,7 +50,7 @@ export CMD_PROPS=\
 " -Dorg.sagebionetworks.bind.record.to.stack.csv=\
 repo.prod.dev.sagebase.org->$(hostname repo $REPO_PROD_INSTANCE_AND_VERSION),\
 portal.prod.dev.sagebase.org->$(hostname portal $PORTAL_PROD_INSTANCE_AND_VERSION),\
-repos.staging.dev.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSION),\
+repo.staging.dev.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSION),\
 portal.staging.dev.sagebase.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION),\
 repotst.prod.sagebase.org->none,\
 portal.tst.dev.sagebase.org->none"
