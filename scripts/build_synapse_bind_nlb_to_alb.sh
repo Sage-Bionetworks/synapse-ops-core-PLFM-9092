@@ -34,6 +34,7 @@ cd $SRC_PATH
 
 mvn clean install
 
+if [[ 'prod' == $STACK ]]; then
 export CMD_PROPS=\
 " -Dorg.sagebionetworks.stack=${STACK}"\
 " -Dorg.sagebionetworks.bind.record.to.stack.csv=\
@@ -43,5 +44,16 @@ repostaging.prod.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSIO
 staging.synapse.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION),\
 repotst.prod.sagebase.org->$(hostname repo $REPO_TEST_INSTANCE_AND_VERSION),\
 tst.synapse.org->$(hostname portal $PORTAL_TEST_INSTANCE_AND_VERSION)"
+else
+export CMD_PROPS=\
+" -Dorg.sagebionetworks.stack=${STACK}"\
+" -Dorg.sagebionetworks.bind.record.to.stack.csv=\
+repo.prod.dev.sagebase.org->$(hostname repo $REPO_PROD_INSTANCE_AND_VERSION),\
+portal.prod.dev.sagebase.org->$(hostname portal $PORTAL_PROD_INSTANCE_AND_VERSION),\
+repos.staging.dev.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSION),\
+portal.staging.dev.sagebase.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION),\
+repotst.prod.sagebase.org->none,\
+portal.tst.dev.sagebase.org->none"
+fi
 
 java -Xms256m -Xmx2g -cp ./target/stack-builder-0.2.0-SNAPSHOT-jar-with-dependencies.jar $CMD_PROPS org.sagebionetworks.template.nlb.BindNetworkLoadBalancersMain
