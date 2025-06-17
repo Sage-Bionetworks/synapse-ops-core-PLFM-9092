@@ -51,9 +51,7 @@ export CMD_PROPS=\
 repo.prod.dev.sagebase.org->$(hostname repo $REPO_PROD_INSTANCE_AND_VERSION),\
 portal.prod.dev.sagebase.org->$(hostname portal $PORTAL_PROD_INSTANCE_AND_VERSION),\
 repo.staging.dev.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSION),\
-portal.staging.dev.sagebase.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION),\
-repotst.prod.sagebase.org->none,\
-portal.tst.dev.sagebase.org->none"
+portal.staging.dev.sagebase.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION)
 fi
 
 java -Xms256m -Xmx2g -cp ./target/stack-builder-0.2.0-SNAPSHOT-jar-with-dependencies.jar $CMD_PROPS org.sagebionetworks.template.nlb.BindNetworkLoadBalancersMain
