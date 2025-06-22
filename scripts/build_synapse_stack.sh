@@ -82,7 +82,7 @@ if [[ "prod" == "$STACK" ]]; then
   CMD_PROPS+=" -Dorg.sagebionetworks.vpc.ops.export.prefix=us-east-1-synapse-ops-vpc-v2"
 else
   CMD_PROPS+=" -Dorg.sagebionetworks.beanstalk.instance.type=t4g.large"
-  CMD_PROPS+=" -Dorg.sagebionetworks.repo.rds.instance.class=db.t4gmedium"
+  CMD_PROPS+=" -Dorg.sagebionetworks.repo.rds.instance.class=db.t4g.medium"
   CMD_PROPS+=" -Dorg.sagebionetworks.repo.rds.allocated.storage=128"
   CMD_PROPS+=" -Dorg.sagebionetworks.repo.rds.max.allocated.storage=256"
   CMD_PROPS+=" -Dorg.sagebionetworks.tables.rds.instance.class=db.t4g.large"
