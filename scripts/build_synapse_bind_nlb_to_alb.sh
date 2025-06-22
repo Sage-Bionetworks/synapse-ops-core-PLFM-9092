@@ -26,7 +26,7 @@ hostname() {
 if [[ -z ${2} || none == ${2} ]]; then
     echo none
 else
-    echo ${1}-prod-${2}
+    echo ${1}-${STACK}-${2}
 fi
 }
 
@@ -53,5 +53,6 @@ portal.prod.dev.sagebase.org->$(hostname portal $PORTAL_PROD_INSTANCE_AND_VERSIO
 repo.staging.dev.sagebase.org->$(hostname repo $REPO_STAGING_INSTANCE_AND_VERSION),\
 portal.staging.dev.sagebase.org->$(hostname portal $PORTAL_STAGING_INSTANCE_AND_VERSION)"
 fi
+echo ${CMD_PROPS}
 
 java -Xms256m -Xmx2g -cp ./target/stack-builder-0.2.0-SNAPSHOT-jar-with-dependencies.jar $CMD_PROPS org.sagebionetworks.template.nlb.BindNetworkLoadBalancersMain
