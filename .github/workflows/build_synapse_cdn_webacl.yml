@@ -53,7 +53,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          repository: Sage-Bionetworks/Synapse-Migration-Utility
+          repository: Sage-Bionetworks/Synapse-Stack-Builder
           ref: develop
           path: ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 
