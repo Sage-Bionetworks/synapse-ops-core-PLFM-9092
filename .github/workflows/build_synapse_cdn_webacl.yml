@@ -1,5 +1,5 @@
 ---
-name: Migration, Prod to Staging
+name: Deploy Synapse CDN webACL
 
 on:
   workflow_call:
