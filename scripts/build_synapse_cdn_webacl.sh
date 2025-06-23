@@ -15,6 +15,6 @@ cd $SRC_PATH
 
 mvn clean install
 
-export CMD_PROPS = " -Dorg.sagebionetworks.stack=${STACK}"
+export CMD_PROPS=" -Dorg.sagebionetworks.stack=${STACK}"
 
 java $CMD_PROPS -Xms256m -Xmx2g -cp ./target/stack-builder-0.2.0-SNAPSHOT-jar-with-dependencies.jar org.sagebionetworks.template.cdn.webacl.CdnWebAclBuilderMain
