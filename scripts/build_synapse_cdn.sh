@@ -7,7 +7,7 @@ set +x
 
 # dev, staging or prod
 STACK=${1}
-INSTANCE_ALIAS=${2}
+SUBDOMAIN=${2}
 CERTIFICATE_ARN=${3}
 
 # Folder containing source code
@@ -18,7 +18,7 @@ cd $SRC_PATH
 mvn clean install
 
 CMD_PROPS=" -Dorg.sagebionetworks.stack=${STACK}"
-CMD_PROPS+=" -Dorg.sagebionetworks.stack.instance.alias=${INSTANCE_ALIAS}"
+CMD_PROPS+=" -Dorg.sagebionetworks.stack.instance.alias=${SUBDOMAINx}"
 CMD_PROPS+=" -Dorg.sagebionetworks.beanstalk.ssl.arn.portal=${CERTIFICATE_ARN}"
 export $CMD_PROPS
 

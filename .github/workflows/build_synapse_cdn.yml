@@ -8,10 +8,10 @@ on:
         required: true
         type: string
         description: dev or prod
-      INSTANCE_ALIAS:
+      SUBDOMAIN:
         required: true
         type: string
-        description: prod or staging or tst
+        description: www or staging or tst
       CERTIFICATE_ARN:
         required: true
         type: string
@@ -69,7 +69,7 @@ jobs:
         run: >
           ${{ needs.get-env.outputs.PATH_TO_SCRIPT }}/scripts/build_synapse_cdn.sh
           ${{ inputs.STACK }}
-          ${{ inputs.INSTANCE_ALIAS}}
+          ${{ inputs.SUBDOMAIN}}
           ${{ inputs.CERTIFICATE_ARN}}
           ${{ needs.get-env.outputs.PATH_TO_SOURCE_CODE }}
 ...
