@@ -18,7 +18,7 @@ cd $SRC_PATH
 mvn clean install
 
 CMD_PROPS=" -Dorg.sagebionetworks.stack=${STACK}"
-CMD_PROPS+=" -Dorg.sagebionetworks.stack.instance.alias=${SUBDOMAINx}"
+CMD_PROPS+=" -Dorg.sagebionetworks.stack.instance.alias=${SUBDOMAIN}"
 CMD_PROPS+=" -Dorg.sagebionetworks.beanstalk.ssl.arn.portal=${CERTIFICATE_ARN}"
 export $CMD_PROPS
 
