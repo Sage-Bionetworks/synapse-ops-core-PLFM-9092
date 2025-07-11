@@ -51,28 +51,28 @@ for runner_name in {runner_name_list}; do
     # Start the service with the following command:
     ./svc.sh start
 
-	JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
+    JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
 
-	# Find GitHub Actions runner service
-	SERVICE=$(systemctl list-units --type=service --all | grep ${runner_name} | awk '{print $1}')
-	echo "Setting JAVA_HOME and PATH for $SERVICE"
-	# Create systemd override dir
-	mkdir -p /etc/systemd/system/$SERVICE.d
-	# Write the override file
-	cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
+    # Find GitHub Actions runner service
+    SERVICE=$(systemctl list-units --type=service --all | grep ${runner_name} | awk '{print $1}')
+    echo "Setting JAVA_HOME and PATH for $SERVICE"
+    # Create systemd override dir
+    mkdir -p /etc/systemd/system/$SERVICE.d
+    # Write the override file
+    cat > /etc/systemd/system/$SERVICE.d/env.conf <<EOF
 [Service]
 Environment="JAVA_HOME=${JAVA_HOME}"
 Environment="PATH=${JAVA_HOME}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 EOF
 
-	echo Created service override file
-	cat /etc/systemd/system/$SERVICE.d/env.conf
+    echo Created service override file
+    cat /etc/systemd/system/$SERVICE.d/env.conf
 
-	echo Restarting $SERVICE
-	# Reload systemd to apply changes
-	systemctl daemon-reexec
-	systemctl daemon-reload
-	systemctl restart "$SERVICE"
+    echo Restarting $SERVICE
+    # Reload systemd to apply changes
+    systemctl daemon-reexec
+    systemctl daemon-reload
+    systemctl restart "$SERVICE"
 done
 
 echo User-data script completed.
