@@ -1,0 +1,21 @@
+---
+name: Dispatch Ensure Runner Exists
+
+on:
+  workflow_dispatch:
+    inputs:
+      NUMBER_OF_RUNNERS:
+        required: false
+        type: number
+        default: 3
+        description: Number of runners to run on the created EC2
+
+jobs:
+  synapse-ops-core-invocation:
+    uses: "./.github/workflows/ensure_runner_exists.yml"
+    with:
+      NUMBER_OF_RUNNERS: ${{ inputs.NUMBER_OF_RUNNERS }}
+      CONTEXT: ${{ vars.CONTEXT }}
+      ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+    secrets: inherit
+...

@@ -22,6 +22,11 @@ on:
         type: string
         default: 'dev'
         description: dev or prod
+      NUMBER_OF_RUNNERS:
+        required: false
+        type: string
+        default: 1
+        description: number of GitHub runners to create on the EC2 instance
       ROLE_TO_ASSUME:
         required: true
         type: string
@@ -122,6 +127,7 @@ jobs:
       LABEL: ${{ inputs.LABEL }}
       INSTANCE_TYPE: ${{ inputs.INSTANCE_TYPE }}
       CONTEXT: ${{ inputs.CONTEXT }}
+      NUMBER_OF_RUNNERS: ${{ inputs.NUMBER_OF_RUNNERS }}
       ROLE_TO_ASSUME: ${{ inputs.ROLE_TO_ASSUME }}
       SYNAPSE_DEPLOYMENT_ROLE: ${{ inputs.SYNAPSE_DEPLOYMENT_ROLE }}
       REPOSITORY_URL: https://github.com/${{ github.repository }}
