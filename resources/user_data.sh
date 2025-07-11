@@ -54,7 +54,7 @@ for runner_name in {runner_name_list}; do
 	JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto.aarch64"
 
 	# Find GitHub Actions runner service
-	SERVICE=$(systemctl list-units --type=service --all | grep '${runner_name}' | awk '{print $1}')
+	SERVICE=$(systemctl list-units --type=service --all | grep ${runner_name} | awk '{print $1}')
 	echo "Setting JAVA_HOME and PATH for $SERVICE"
 	# Create systemd override dir
 	mkdir -p /etc/systemd/system/$SERVICE.d
