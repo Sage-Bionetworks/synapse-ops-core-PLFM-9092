@@ -37,7 +37,7 @@ def get_github_repo_url(env: dict) -> str:
 def get_runner_label(env: dict) -> str:
     return env.get("RUNNER_LABEL")
 
-def get_number_of_runners(env: dict) -> integer:
+def get_number_of_runners(env: dict) -> int:
     return int(env.get("NUMBER_OF_RUNNERS"))
 
 def get_image_central_role_arn(env: dict) -> str:
